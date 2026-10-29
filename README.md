@@ -1,33 +1,166 @@
-Food Delivery Time Prediction
-A reproducible machine-learning project that predicts food-delivery time in minutes from order, rider, route, traffic, and weather information.
+<div align="center">
 
-The project trains and compares regression models, tunes XGBoost, evaluates the selected model on a held-out test split, and saves a single deployable artifact containing the complete preprocessing pipeline and model.
+# 🛵 Food Delivery Time Prediction
 
-Features
-Predicts delivery time in minutes.
+### Leakage-Safe, Reproducible Regression Pipeline
 
-Cleans raw delivery records and engineers features such as delivery distance, order hour, and day of week.
+**Predicts food-delivery time in minutes from order, rider, route, traffic, and weather data — with identical-fold model comparison, tuned XGBoost, a single-use test set, and one portable deployable artifact.**
 
-Uses Haversine distance between restaurant and delivery coordinates.
+[![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-Pipeline-F7931E?logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-Tuned_Regressor-189AB4)](https://xgboost.readthedocs.io/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-UI-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![License](https://img.shields.io/badge/License-Educational_%26_Portfolio-yellow.svg)](#-license)
 
-Handles missing values, invalid ratings, invalid coordinates, and inconsistent categorical values.
+🔗 **Live Demo:** _add your Streamlit app link here_
 
-Compares Linear Regression, Random Forest, and XGBoost using identical cross-validation folds.
+</div>
 
-Performs randomized hyperparameter tuning for XGBoost.
+---
 
-Selects the final model using cross-validation MAE, then evaluates it once on the test set.
+## 📌 Overview
 
-Supports either a random train/test split or a time-based split using order dates.
+**Food Delivery Time Prediction** is a production-oriented regression project that estimates delivery time in minutes from raw delivery records.
 
-Generates EDA charts: delivery-time distribution, delivery time by hour and traffic level, and numeric-feature correlations.
+Instead of a notebook-only workflow, the project trains and compares multiple regression models, tunes XGBoost, evaluates the selected model once on a held-out test split, and saves a **single deployable artifact** containing the complete preprocessing pipeline and model.
 
-Saves one portable .joblib artifact containing the pipeline, feature metadata, model choice, CV comparison, test metrics, and training provenance.
+The project is built around one core principle:
 
-Provides a CLI for training and batch prediction.
+> **No statistic is learned from data it shouldn't see: all cleaning is stateless, and all fitted preprocessing lives inside one pipeline.**
 
-Project structure
-text
+---
+
+## ✨ Key Capabilities
+
+### 🧹 Data Preparation
+
+- **Stateless feature preparation** via `prepare_features()`, the single place where raw data is cleaned.
+- **Haversine distance** between restaurant and delivery coordinates.
+- **Time features** such as order hour and day of week.
+- **Robust cleaning** of missing-value markers, invalid ratings, invalid coordinates, and inconsistent categorical labels.
+
+### 🤖 Modeling
+
+- **Identical-fold comparison** of Linear Regression, Random Forest, and XGBoost.
+- **Randomized hyperparameter search** for XGBoost.
+- **CV-MAE model selection**, with the test set used only once after selection.
+- **Flexible splitting:** random split or time-based split using order dates.
+
+### 🛡️ Leakage Safety & Reproducibility
+
+- **Single scikit-learn `Pipeline`** holding imputation, categorical encoding, scaling, and the model.
+- **Imputation statistics learned only from training data.**
+- **No column drift at inference:** one-hot encoding is fitted once and stored in the pipeline.
+- **No separate scaler file** to manage.
+
+### 📈 Evaluation & Diagnostics
+
+- **MAE, RMSE, and R²** on the held-out test set.
+- **MAE breakdowns** by traffic density and city type to find where the model performs poorly.
+- **EDA charts:** delivery-time distribution, delivery time by hour and traffic level, and numeric-feature correlations.
+
+### 📦 Deployment Readiness
+
+- **One portable `.joblib` artifact** with pipeline, feature metadata, model choice, CV comparison, test metrics, and training provenance.
+- **CLI** for training and batch prediction.
+- **Streamlit UI** for local interactive predictions.
+
+---
+
+## 📊 Results
+
+| Evaluation Area | Result |
+|---|---:|
+| Models compared | 4 (Linear, Random Forest, XGBoost, Tuned XGBoost) |
+| Model-selection metric | Cross-validation MAE |
+| Test-set usage | Once, after model selection |
+| Selected model | _fill after training_ |
+| Test MAE (min) | _fill after training_ |
+| Test RMSE (min) | _fill after training_ |
+| Test R² | _fill after training_ |
+
+> Run `train` and copy the values from the saved artifact's `cv_comparison` and `test_metrics` fields into this table.
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+flowchart TD
+    A[Raw Delivery CSV] --> B[prepare_features<br/>stateless cleaning]
+    B --> C{Split Strategy}
+    C -->|random| D[Train / Test Split]
+    C -->|time| D
+    D --> E[Training Set]
+    D --> F[Held-out Test Set]
+    E --> G[K-Fold CV<br/>identical folds]
+    G --> H[Linear Regression]
+    G --> I[Random Forest]
+    G --> J[XGBoost]
+    G --> K[Tuned XGBoost<br/>Randomized Search]
+    H --> L[Select Best by CV MAE]
+    I --> L
+    J --> L
+    K --> L
+    L --> M[Evaluate Once on Test Set]
+    F --> M
+    M --> N[Save .joblib Artifact]
+    N --> O[CLI Batch Prediction]
+    N --> P[Streamlit UI]
+```
+
+### Training Flow
+
+1. **Stateless preparation** cleans raw records and engineers distance, order hour, and day of week.
+2. **Split** the data using a random or time-based strategy.
+3. **Build a single `Pipeline`** with imputation, encoding, scaling, and the regressor.
+4. **Cross-validate** all candidate models on identical K-fold splits.
+5. **Tune XGBoost** with randomized hyperparameter search.
+6. **Select** the final model by cross-validation MAE.
+7. **Evaluate once** on the held-out test set (MAE, RMSE, R²) and log MAE by traffic density and city type.
+8. **Optionally refit** the selected model on all available data.
+9. **Save** the full artifact as a single `.joblib` file.
+
+---
+
+## 🧪 Data-Quality Rules
+
+```mermaid
+flowchart LR
+    A[Raw Record] --> B[Strip Whitespace<br/>Missing Markers → NaN]
+    B --> C[Validate Numeric Fields]
+    C --> D[Clean Weather Labels]
+    D --> E[Haversine Distance<br/>+ Order Hour + Day of Week]
+    E --> F[Invalid Ratings / Distances → NaN]
+    F --> G[Pipeline Imputation<br/>Median / Most Frequent]
+```
+
+- Ratings outside the range **0–5** are treated as missing.
+- Delivery distances of **100 km or more** are treated as invalid coordinates.
+- Missing numeric values are imputed with the **median**.
+- Missing categorical values are imputed with the **most frequent value**.
+- Traffic density is **ordinal-encoded**: `Low → Medium → High → Jam`.
+- Unknown categorical values at inference time are **safely handled by the encoder**.
+
+---
+
+## 🧩 Tech Stack
+
+| Layer | Tools |
+|---|---|
+| Data handling | pandas, NumPy |
+| Modeling & preprocessing | scikit-learn (`Pipeline`) |
+| Gradient boosting | XGBoost |
+| Persistence | Joblib |
+| Visualization | Matplotlib |
+| UI | Streamlit |
+| Interface | Python CLI |
+
+---
+
+## 📂 Project Structure
+
+```text
 .
 ├── food_delivery_pipeline.py       # Training, evaluation, and inference pipeline
 ├── ui.py                           # Streamlit user interface
@@ -42,192 +175,127 @@ text
     ├── correlation.png
     ├── target_distribution.png
     └── time_by_hour_and_traffic.png
-Machine-learning design
-Stateless feature preparation
-prepare_features() is the only place where raw data is cleaned. It performs stateless transformations such as:
+```
 
-Removing whitespace and converting missing-value markers to NaN.
+---
 
-Parsing and validating numeric fields.
+## 🚀 Quick Start
 
-Cleaning weather-condition labels.
+### 1. Clone and install
 
-Computing Haversine distance between restaurant and delivery coordinates.
-
-Extracting order hour and day of week.
-
-Treating invalid ratings and unrealistic distances as missing values.
-
-Because this function does not learn any statistics from the data, it can safely run before the train/test split and again during inference.
-
-Leakage-safe preprocessing
-All fitted preprocessing steps—imputation, categorical encoding, and scaling—are stored inside a single scikit-learn Pipeline. This ensures that:
-
-Imputation statistics are learned only from training data.
-
-One-hot encoding does not cause column drift at inference time.
-
-The complete preprocessing and model behavior is saved in one artifact.
-
-There is no separate scaler file to manage.
-
-Model comparison
-The following models are compared using the same K-fold cross-validation splits on the training data:
-
-Model	Purpose
-Linear Regression	Simple interpretable baseline
-Random Forest Regressor	Nonlinear tree-based baseline
-XGBoost Regressor	Main candidate for tuned performance
-Tuned XGBoost Regressor	XGBoost with randomized hyperparameter search
-The final model is selected using cross-validation MAE. The test set is used only once, after model selection.
-
-Evaluation metrics
-The project reports:
-
-MAE — Mean Absolute Error, in minutes.
-
-RMSE — Root Mean Squared Error, in minutes.
-
-R² — Coefficient of determination.
-
-It also logs MAE breakdowns by traffic density and city type to identify where the model performs poorly.
-
-Requirements
-Python 3.10+
-
-pandas
-
-NumPy
-
-scikit-learn
-
-XGBoost
-
-Joblib
-
-Matplotlib
-
-Streamlit
-
-Install dependencies:
-
-bash
+```bash
+git clone https://github.com/rj1230/<your-repo-name>.git
+cd <your-repo-name>
 pip install -r requirements.txt
-Training the model
-Run training with the default dataset and save the model artifact:
+```
 
-bash
+> Requires **Python 3.10+**.
+
+### 2. Train the model
+
+```bash
 python food_delivery_pipeline.py train --data "Food delivery.csv"
-Generate EDA charts while training:
+```
 
-bash
-python food_delivery_pipeline.py train --data "Food delivery.csv" --eda
-Use a time-based split, which holds out the most recent orders for testing:
+Common training options:
 
-bash
-python food_delivery_pipeline.py train --data "Food delivery.csv" --split time
-Use a random split instead:
+| Goal | Flag |
+|---|---|
+| Generate EDA charts | `--eda` |
+| Time-based split (hold out most recent orders) | `--split time` |
+| Random split | `--split random` |
+| More XGBoost search candidates | `--n-iter 50` |
+| Refit selected model on all data before saving | `--refit-full` |
+| Custom model output path | `--model models/my_model.joblib` |
 
-bash
-python food_delivery_pipeline.py train --data "Food delivery.csv" --split random
-Increase the number of XGBoost hyperparameter-search candidates:
+Example combining options:
 
-bash
-python food_delivery_pipeline.py train --data "Food delivery.csv" --n-iter 50
-Refit the selected model on all available data before saving:
+```bash
+python food_delivery_pipeline.py train --data "Food delivery.csv" --split time --eda --n-iter 50
+```
 
-bash
-python food_delivery_pipeline.py train --data "Food delivery.csv" --refit-full
-Specify a custom model output path:
+### 3. Run batch predictions
 
-bash
-python food_delivery_pipeline.py train --data "Food delivery.csv" --model models/my_model.joblib
-Making predictions
-Create a CSV containing raw order records with the required input columns, then run:
-
-bash
+```bash
 python food_delivery_pipeline.py predict \
   --model models/delivery_time_model.joblib \
   --input new_orders.csv \
   --output preds.csv
+```
+
 The output file contains:
 
-text
+```text
 ID,predicted_minutes
-If the input file does not contain an ID column, only predicted_minutes is written.
+```
 
-Required input columns
-The prediction input must include the following raw columns:
+If the input file has no `ID` column, only `predicted_minutes` is written.
 
-text
-Delivery_person_Age
-Delivery_person_Ratings
-Restaurant_latitude
-Restaurant_longitude
-Delivery_location_latitude
-Delivery_location_longitude
-Time_Orderd
-Order_Date
-Weatherconditions
-Road_traffic_density
-Vehicle_condition
-Type_of_order
-Type_of_vehicle
-multiple_deliveries
-Festival
-City
-The target column used during training is:
+### 4. Launch the Streamlit UI
 
-text
-Time_taken(min)
-Streamlit app
-Launch the local prediction interface:
-
-bash
+```bash
 streamlit run ui.py
-Model artifact
-The saved artifact is a dictionary stored at:
+```
 
-text
-models/delivery_time_model.joblib
-It contains:
+---
 
-Key	Description
-Key	Description
-pipeline	Full preprocessing and regression pipeline
-features	Final model feature names
-raw_columns	Required raw input columns
-selected_model	Name of the selected model
-cv_comparison	Cross-validation metrics for all candidates
-test_metrics	MAE, RMSE, and R² on the held-out test set
-meta	Training timestamp, split type, library versions, and refit status
-Data-quality rules
-Ratings outside the range 0–5 are treated as missing.
+## 🔑 Inputs & Target
 
-Delivery distances of 100 km or more are treated as invalid coordinates.
+### Required input columns
 
-Missing numeric values are imputed using the median.
+| Group | Columns |
+|---|---|
+| Rider | `Delivery_person_Age`, `Delivery_person_Ratings`, `Vehicle_condition`, `Type_of_vehicle` |
+| Route | `Restaurant_latitude`, `Restaurant_longitude`, `Delivery_location_latitude`, `Delivery_location_longitude`, `City` |
+| Order | `Time_Orderd`, `Order_Date`, `Type_of_order`, `multiple_deliveries`, `Festival` |
+| Conditions | `Weatherconditions`, `Road_traffic_density` |
 
-Missing categorical values are imputed using the most frequent value.
+### Target column
 
-Traffic density is ordinal-encoded in the order: Low, Medium, High, Jam.
+```text
+Time_taken(min)
+```
 
-Unknown categorical values at inference time are safely handled by the encoder.
+---
 
-Possible improvements
-Add geospatial features such as city-level average delivery time.
+## 📦 Model Artifact
 
-Use more sophisticated date features, including holidays and peak-hour indicators.
+The saved artifact is a dictionary stored at `models/delivery_time_model.joblib`.
 
-Add model explainability using SHAP values.
+| Key | Description |
+|---|---|
+| `pipeline` | Full preprocessing and regression pipeline |
+| `features` | Final model feature names |
+| `raw_columns` | Required raw input columns |
+| `selected_model` | Name of the selected model |
+| `cv_comparison` | Cross-validation metrics for all candidates |
+| `test_metrics` | MAE, RMSE, and R² on the held-out test set |
+| `meta` | Training timestamp, split type, library versions, and refit status |
 
-Deploy the model behind a FastAPI service.
+---
 
-Add automated tests for feature engineering and inference.
+## 🧪 Evaluation Coverage
 
-Track experiments with MLflow or Weights & Biases.
+- **Model comparison:** Linear Regression, Random Forest, XGBoost, and Tuned XGBoost on identical CV folds.
+- **Primary metrics:** MAE (minutes), RMSE (minutes), and R².
+- **Segment diagnostics:** MAE by traffic density and by city type.
+- **Split robustness:** random split and time-based split for temporal generalization.
+- **Leakage control:** imputation, encoding, and scaling fitted only on training data inside the pipeline.
 
-Monitor prediction drift and data quality in production.
+---
 
-License
+## 🛡️ Reliability Model
+
+This project uses a defense-in-depth approach to avoid optimistic estimates:
+
+- **Stateless pre-split cleaning:** `prepare_features()` learns nothing from data, so it is safe before the split and at inference.
+- **Pipeline-contained fitting:** all learned preprocessing lives inside one `Pipeline`.
+- **Identical CV folds:** every candidate is compared on the same splits.
+- **Single-use test set:** the test split is touched only after model selection.
+- **Schema safety:** `raw_columns` and `features` are stored with the model to catch input drift.
+- **Provenance:** timestamp, split type, library versions, and refit status are saved in `meta`.
+---
+
+## 📄 License
+
 This project is available for educational and portfolio use.
