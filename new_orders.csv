@@ -1,0 +1,21 @@
+ID,Delivery_person_ID,Delivery_person_Age,Delivery_person_Ratings,Restaurant_latitude,Restaurant_longitude,Delivery_location_latitude,Delivery_location_longitude,Order_Date,Time_Orderd,Time_Order_picked,Weatherconditions,Road_traffic_density,Vehicle_condition,Type_of_order,Type_of_vehicle,multiple_deliveries,Festival,City
+0x8c53 ,INDORES16DEL01 ,23,4.6,22.744648,75.894377,22.784648,75.934377,05-03-2022,13:15:00,13:25:00,conditions Cloudy,High ,1,Snack ,scooter ,1,No ,Metropolitian 
+0xc8b4 ,AURGRES20DEL01 ,28,4.9,0.0,0.0,0.07,0.07,14-02-2022,23:50:00,23:55:00,conditions Sunny,Low ,0,Drinks ,motorcycle ,0,No ,Metropolitian 
+0x7613 ,BANGRES14DEL01 ,39,3.7,12.949934,77.699386,13.019934,77.769386,02-03-2022,17:20:00,17:35:00,conditions Windy,Medium ,2,Buffet ,electric_scooter ,1,No ,Metropolitian 
+0xe0e7 ,KOLRES07DEL03 ,37,4.1,22.547186,88.35068,22.637186,88.44068,12-02-2022,18:25:00,18:30:00,conditions Sunny,Medium ,0,Drinks ,motorcycle ,1,No ,Urban 
+0xc0c8 ,GOARES09DEL03 ,20,4.7,-15.303897,73.914336,15.393897,74.004336,14-02-2022,23:15:00,23:30:00,conditions Sandstorms,Low ,2,Meal ,scooter ,0,No ,Metropolitian 
+0xbc9b ,PUNERES08DEL01 ,38,4.7,18.53408,73.89852,18.57408,73.93852,03-03-2022,16:10:00,16:25:00,conditions Windy,Medium ,2,Drinks ,scooter ,0,No ,Metropolitian 
+0xd2bc ,DEHRES13DEL01 ,32,3.9,30.366322,78.070453,30.476322,78.180453,14-02-2022,21:00:00,21:10:00,conditions Windy,Jam ,2,Meal ,scooter ,2,No ,Metropolitian 
+0xdbd6 ,DEHRES01DEL03 ,33,4.6,0.0,0.0,0.03,0.03,17-02-2022,22:40:00,22:55:00,conditions Stormy,Low ,2,Snack ,scooter ,1,No ,Metropolitian 
+0x9d0e ,RANCHIRES04DEL02 ,34,4.6,23.359033,85.325347,23.409033,85.375347,19-03-2022,17:50:00,18:05:00,conditions Windy,Medium ,2,Meal ,scooter ,0,No ,Metropolitian 
+0x3a26 ,MYSRES15DEL01 ,27,4.5,12.352058,76.60665,12.362058,76.61665,11-03-2022,09:50:00,09:55:00,conditions Cloudy,Low ,0,Drinks ,motorcycle ,1,No ,Metropolitian 
+0x47d8 ,RANCHIRES01DEL03 ,25,4.7,23.416792,85.316842,23.476792,85.376842,05-03-2022,21:40:00,21:55:00,conditions Sunny,Jam ,1,Meal ,scooter ,0,No ,Urban 
+0x9a4c ,MYSRES02DEL01 ,28,4.7,12.304569,76.643622,12.344569,76.683622,03-03-2022,12:15:00,12:30:00,conditions Sunny,High ,1,Snack ,motorcycle ,0,No ,Urban 
+0xcd18 ,AURGRES17DEL03 ,30,4.9,19.876994,75.372353,19.936994,75.432353,11-02-2022,19:35:00,19:50:00,conditions Cloudy,Jam ,1,Buffet ,motorcycle ,0,No ,Metropolitian 
+0x3fc7 ,JAPRES010DEL01 ,34,4.2,26.921411,75.793604,27.031411,75.903604,04-03-2022,19:20:00,19:25:00,conditions Sandstorms,Jam ,2,Meal ,scooter ,1,No ,Metropolitian 
+0xa2a6 ,PUNERES13DEL02 ,26,4.7,18.56245,73.916619,18.58245,73.936619,21-03-2022,11:15:00,11:25:00,conditions Fog,High ,1,Drinks ,motorcycle ,1,No ,Metropolitian 
+0x193c ,INDORES15DEL02 ,36,4.9,22.760072,75.892574,22.840072,75.972574,31-03-2022,23:15:00,23:30:00,conditions Sunny,Low ,1,Meal ,scooter ,1,No ,Metropolitian 
+0x8504 ,RANCHIRES04DEL02 ,20,5,23.359033,85.325347,23.379033,85.345347,26-03-2022,08:40:00,08:50:00,conditions Sunny,Low ,1,Snack ,motorcycle ,0,No ,Metropolitian 
+0x58df ,RANCHIRES17DEL02 ,22,4.9,23.374878,85.335739,23.504878,85.465739,31-03-2022,18:45:00,18:55:00,conditions Fog,Medium ,1,Buffet ,motorcycle ,0,No ,Metropolitian 
+0x1891 ,JAPRES04DEL01 ,26,4.8,26.902328,75.794257,26.912328,75.804257,15-03-2022,08:20:00,08:35:00,conditions Windy,Low ,1,Drinks ,scooter ,1,No ,Metropolitian 
+0x6103 ,SURRES17DEL03 ,29,4.5,21.149569,72.772697,21.179569,72.802697,01-03-2022,21:40:00,21:55:00,conditions Cloudy,Jam ,1,Drinks ,scooter ,NaN ,No ,Urban 

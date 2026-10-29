@@ -1,0 +1,14 @@
+# Place this file at .streamlit/config.toml next to ui.py, then restart Streamlit.
+[theme]
+base = "dark"
+primaryColor = "#58A6C8"
+backgroundColor = "#0D1117"
+secondaryBackgroundColor = "#131A22"
+textColor = "#E6EDF3"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false
